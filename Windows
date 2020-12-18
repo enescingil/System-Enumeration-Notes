@@ -1,0 +1,48 @@
+*******-- Basic Stuff --*******
+whoami // User domain and name
+hostname // Server name
+systeminfo
+whoami /groups
+net users // User's list
+net localgroup Administrators //Admin group members
+net localgroup //User groups
+tasklist /SVC //Working processes
+ipconfig /all
+netstat -ano //Listened connections
+net start //Working services
+driverquery //Drivers
+net share //Shares
+more %WINDIR%\System32\drivers\etc\hosts //Host file
+more %WINDIR%\System32\drivers\etc\network //Network File
+gpresult /R //Group Policy
+
+*******-- Low Hanging Fruit --*******
+req query HKCU\SOFTWARE\Policies\Microsot\Windows\Installer /v AlwaysInstallElevated //Is AlwaysInstallElaveted on?
+req query HKLM\SOFTWARE\Policies\Microsot\Windows\Installer /v AlwaysInstallElevated //Is AlwaysInstallElaveted on?
+accesschk.exe -uwcqv "Authenticated Users" * /accepteula //Services changeable by Authenticated Users
+accesschk.exe -uwcqv "Users" * /accepteula //Services changeable by Users
+accesschk.exe -uwcqv "Everyone" * /accepteula //Services changeable by Everyone
+req query HKLM\SOFTWARE\Policies\Microsot\Windows\Installer /v DefaultUsername //Default Login Username Credentials
+req query HKLM\SOFTWARE\Policies\Microsot\Windows\Installer /v DefaultPassword //Default Login Password Credentials
+wmic service get name,displayname,pathname,startmode 2>nul | findstr /i /v "c:\windows\\" | findstr /i /v " "" //Hidden service executables
+
+*******-- Searching For A File --*******
+dir \/a/s/b > filelist.txt //Record every file for further usage
+type filelist.txt | findstr /l unattend.xml //Look for a credentials
+type filelist.txt | findstr /l unattend.txt
+type filelist.txt | findstr /l sysprep.inf
+type filelist.txt | findstr /l sysprep.xml
+type filelist.txt | findstr /l \. *passw* . | findstr /VI\.*.chm$ | findstr /VI\.*.log$ | findstr /VI\.*.dll$ | findstr /VI\.*.exe$
+type filelist.txt | findstr /l \.*ssh.*[.]ini$
+type filelist.txt | findstr /l
+\.*ultravnc[.]ini$
+type filelist.txt | findstr /l \.*vnc[.]ini$
+findstr /si "password=" C:\*.ini C:\*.xml C:\*.txt C:\*.bat //Look for password.
+findstr /si "passwd=" C:\*.ini C:\*.xml C:\*.txt C:\*.bat
+findstr /si "pass=" C:\*.ini C:\*.xml C:\*.txt C:\*.bat
+findstr /si "pwd=" C:\*.ini C:\*.xml C:\*.txt C:\*.bat
+
+*******-- Registry --*******
+req query HKLM\SOFTWARE\RealVNC\vncserver /v Password
+req query HKLM\Software\TightVNC\Server /v Password
+req query HKCU\Software\RealVNC\Server /v Password
